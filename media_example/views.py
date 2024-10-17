@@ -19,4 +19,4 @@ def media(request):
 
 
 def media_example(request):
-    return render(request, "media-example.html")
+    return render(request, "media-example.html", {"content": content})
