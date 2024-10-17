@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
-from myproject.myapp.models import Review
+# from myproject.myapp.models import Review
 
 # Create your views here.
 def my_view(request):
@@ -14,5 +14,9 @@ def media(request):
     return {"MEDIA_URL": settings.MEDIA_URL}
 
 
-def latest_review(request):
-    return {"latest_reviews": Review.objects.order_by("-date_created")[:5]}
+# def latest_review(request):
+#     return {"latest_reviews": Review.objects.order_by("-date_created")[:5]}
+
+
+def media_example(request):
+    return render(request, "media-example.html")
