@@ -23,7 +23,9 @@ import media_example.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('media-example/', media_example.views.media_example)
+    path('media-example/', media_example.views.media_example),
+    path("view/", media_example.views.view),
+    path('success/', media_example.views.success, name='success-url')
 ]
 
 if settings.DEBUG:

@@ -1,7 +1,8 @@
 <body>
-
     <a href="{{ MEDIA_URL }}test.txt">Test Text File</a>
     <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file-upload-name">
+        {% csrf_token %}
+        <input type="file" name="file_upload">
+        <button type="submit">Submit</button>
         
 </body>

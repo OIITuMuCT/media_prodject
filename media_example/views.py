@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.conf import settings
 # from myproject.myapp.models import Review
+from .forms import ExampleForm
 
 # Create your views here.
 def my_view(request):
@@ -19,4 +21,32 @@ def media(request):
 
 
 def media_example(request):
-    return render(request, "media-example.html", {"content": content})
+    if request.method == "POST":
+        save_path = settings.MEDIA_ROOT / request.FILES["file_upload"].name
+        
+        with open(save_path, "wb") as output_file:
+            for chunk in request.FILES["file_upload"].chunks():
+                output_file.write(chunk)
+    return render(request, "media-example.html")
+
+
+def view(request):
+    if request.method == "POST":
+        # instantiate the form with POST data and files
+        form = ExampleForm(request.POST, request.FILES)
+        if form.is_valid():
+            # process the form and save files
+            save_path = settings.MEDIA_ROOT / request.FILES["file_upload"].name
+
+            with open(save_path, "wb") as output_file:
+                for chunk in request.FILES["file_upload"].chunks():
+                    output_file.write(chunk)
+            return redirect("success-url")
+    else:
+        # instantiate an empty form ad we've seen before
+        form = ExampleForm()
+    # render a template, the same as for other forms
+    return render(request, "template.html", {"form": form})
+
+def success(request):
+    return HttpResponse("Successfully upload file")
