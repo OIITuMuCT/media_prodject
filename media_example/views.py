@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from PIL import Image
 from .forms import ExampleForm, UploadForm, PictureForm
-
+from .models import ExampleModel
 
 
 # Create your views here.
@@ -26,7 +26,6 @@ def media(request):
     Add media-related context variables to the context.
     """
     return {"MEDIA_URL": settings.MEDIA_URL}
-
 
 
 def media_example(request):
@@ -96,3 +95,10 @@ def download_view(request, relative_path):
     full_path = os.path.join(settings.MEDIA_ROOT, "protected", relative_path)
     file_handle = open(full_path, "rb")
     return FileResponse(file_handle) # Django sends the file then closes the handle
+
+def view_example_model(request):
+    if request.method == "POST":
+        m = ExampleModel() # Create a new ExampleModel instance
+        m.file_field = request.FILES["uploaded_file"]
+        m.save()
+    return render(request, "example-model.html")

@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+{% block title %}ExampleModel{% endblock %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file_upload">
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
