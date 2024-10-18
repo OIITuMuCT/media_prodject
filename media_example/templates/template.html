@@ -1,7 +1,11 @@
+{% extends "index.html" %}
+{% block title %}ExampleForm{% endblock %}
+{% block content %}
 <h1>Example Form</h1>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{form.as_p}}
+    <input type="file" name="file_upload">
     <button type="submit">Save</button>
 </form>
+{% endblock %}

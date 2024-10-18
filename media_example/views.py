@@ -1,13 +1,25 @@
+import os.path
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
+from django.core.exceptions import PermissionDenied
 from django.conf import settings
-# from myproject.myapp.models import Review
-from .forms import ExampleForm
+from PIL import Image
+from .forms import ExampleForm, UploadForm, PictureForm
+
+
 
 # Create your views here.
+
+def index(request):
+    return render(request, "index.html")
+
 def my_view(request):
-    return render(request, "template.html", {"MEDIA_URL":
-        settings.MEDIA_URL, "username": "jbloggs"})
+    return render(
+        request,
+        "template.html",
+        {"MEDIA_URL": settings.MEDIA_URL, "username": "jbloggs"},
+    )
+
 
 def media(request):
     """
@@ -16,14 +28,11 @@ def media(request):
     return {"MEDIA_URL": settings.MEDIA_URL}
 
 
-# def latest_review(request):
-#     return {"latest_reviews": Review.objects.order_by("-date_created")[:5]}
-
 
 def media_example(request):
     if request.method == "POST":
         save_path = settings.MEDIA_ROOT / request.FILES["file_upload"].name
-        
+
         with open(save_path, "wb") as output_file:
             for chunk in request.FILES["file_upload"].chunks():
                 output_file.write(chunk)
@@ -42,23 +51,48 @@ def view(request):
                 for chunk in request.FILES["file_upload"].chunks():
                     output_file.write(chunk)
             return redirect("success-url")
-
-        # TODO Нужно проработать эти два варианта
-        # if form.is_valid():
-        #     save_file_upload("/path/to/save.jpg",
-        #     request.FILES["file_upload"])
-        #     return redirect("/success-url/")
-        # TODO Нужно проработать эти два варианта
-        # if form.is_valid():
-        #     save_file_upload("/path/to/save.jpg",
-        #         form.cleaned_data["file_upload"])
-        #     return redirect("/success-url/")
-
     else:
         # instantiate an empty form ad we've seen before
         form = ExampleForm()
     # render a template, the same as for other forms
     return render(request, "template.html", {"form": form})
 
+
+def view_upload(request):
+    form = UploadForm(request.POST, request.FILES)
+    if request.method == "POST":
+        if form.is_valid():
+            save_path = os.path.join(
+                settings.MEDIA_ROOT, request.FILES["file_upload"].name
+            )
+        
+            with open(save_path, "wb") as output_file:
+                for chunk in form.cleaned_data["file_upload"].chunks():
+                    output_file.write(chunk)
+    else:
+        form = UploadForm()
+    return render(request, "media-example.html", {"form": form})
+
+def image_view(request):
+    if request.method == "POST":
+        form = PictureForm(request.POST, request.FILES)
+        if form.is_valid():
+            save_path = settings.MEDIA_ROOT / form.cleaned_data["picture"].name
+
+            image = Image.open(form.cleaned_data["picture"])
+            image.thumbnail((50, 50))
+            image.save(save_path)
+
+    else:
+        form = PictureForm()
+    return render(request, "picture-form.html")
+
 def success(request):
     return HttpResponse("Successfully upload file")
+
+def download_view(request, relative_path):
+    if request.user.is_anonymous:
+        raise PermissionDenied
+    full_path = os.path.join(settings.MEDIA_ROOT, "protected", relative_path)
+    file_handle = open(full_path, "rb")
+    return FileResponse(file_handle) # Django sends the file then closes the handle

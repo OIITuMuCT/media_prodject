@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home Page{% endblock %}</title>
+</head>
+<div>
+    <a href="{% url "media_example" %}">Media Example</a>
+    <a href="{% url "view" %}">Example Form</a>
+    <a href="{% url "image_form" %}">Image Form</a>
+    <a href="#">My View</a>
+    {% comment %} <a href="{% url "downloads" %}">Downloads</a> {% endcomment %}
+    <a href="{% url "index" %}">Home</a>
+</div>
+<body>
+    {% block content %}
+    
+        <ul>   
+        <li><p>ExampleForm</p></li>
+        <li><p>UploadForm</p></li>
+        <li> <p>PictureForm</p></li>
+        </ul>
+
+
+    {% endblock %}
+</body>
+
+</html>

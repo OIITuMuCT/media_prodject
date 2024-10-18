@@ -23,9 +23,13 @@ import media_example.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('media-example/', media_example.views.media_example),
-    path("view/", media_example.views.view),
-    path('success/', media_example.views.success, name='success-url')
+    path("", media_example.views.index, name="index"),
+    path('media-example/', media_example.views.media_example, name="media_example"),
+    path("view/", media_example.views.view, name='view'),
+    path('success/', media_example.views.success, name='success-url'),
+    path("my-view/", media_example.views.my_view),
+    path('picture-form/', media_example.views.image_view, name="image_form"),
+    path("downloads/<path:relative_path>", media_example.views.download_view, name="downloads"),
 ]
 
 if settings.DEBUG:
