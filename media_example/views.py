@@ -42,6 +42,18 @@ def view(request):
                 for chunk in request.FILES["file_upload"].chunks():
                     output_file.write(chunk)
             return redirect("success-url")
+
+        # TODO Нужно проработать эти два варианта
+        # if form.is_valid():
+        #     save_file_upload("/path/to/save.jpg",
+        #     request.FILES["file_upload"])
+        #     return redirect("/success-url/")
+        # TODO Нужно проработать эти два варианта
+        # if form.is_valid():
+        #     save_file_upload("/path/to/save.jpg",
+        #         form.cleaned_data["file_upload"])
+        #     return redirect("/success-url/")
+
     else:
         # instantiate an empty form ad we've seen before
         form = ExampleForm()
