@@ -143,3 +143,11 @@ def view_db_1(request):
     else:
         form = ImageFileModelForm()
     return render(request, "db-view-1.html", {"form": form, "instance": instance})
+
+
+# def update_view(request, pk):
+#     instance = ImageFileModel.objects.get(pk=pk)
+#     form = ImageFileForm(request.POST, request.FILES, instance=instance)
+#     if form.valid():
+#         form.save()
+#     return render(request, "")
