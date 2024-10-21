@@ -112,4 +112,4 @@ def view_db(request, model_pk):
         # store the uploaded file on the instance
         m.file_field = form.cleaned_data["file_upload"]
         m.save()
-    return render(request, "example-model.html")
+    return render(request, "db-view.html")

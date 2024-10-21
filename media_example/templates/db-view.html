@@ -3,10 +3,11 @@
 {% block title %}DB View{% endblock %}
 
 {% block content %}
+
 <form method="post" enctype="myltipart/form-data">
     {% csrf_token %}
     <input type="file" name="file_upload">
     <button type="submit">Submit</button>
-</form>
+</form> 
 
 {% endblock %}
