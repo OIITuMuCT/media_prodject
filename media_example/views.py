@@ -4,7 +4,7 @@ from django.http import HttpResponse, FileResponse
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from PIL import Image
-from .forms import ExampleForm, UploadForm, PictureForm, ImageFileForm
+from .forms import ExampleForm, UploadForm, PictureForm, ImageFileForm, ImageFileModelForm
 from .models import ExampleModel, ImageFileModel
 
 
@@ -87,7 +87,8 @@ def image_view(request):
     return render(request, "picture-form.html")
 
 def success(request):
-    return HttpResponse("Successfully upload file")
+    # return HttpResponse("Successfully upload file")
+    return render(request, "success.html")
 
 def download_view(request, relative_path):
     if request.user.is_anonymous:
@@ -108,17 +109,14 @@ def view_example_model(request):
     return render(request, "example-model.html")
 
 def view_db(request):
-    instance = ExampleModel.objects.get(id=4)
-    url = instance.file_field.url
-    # form = ExampleForm(request.POST, request.FILES)
-    # if form.is_valid():
-    #     # Get an existing model instance
-    #     m = ExampleModel.objects.get(pk=model_pk)
+    if request.method == "POST":
+        form = ImageFileModelForm(request.POST, request.FILES)
+        form.save()
+        return redirect("success-url")
+    else:
+        form = ImageFileModelForm()
         
-    #     # store the uploaded file on the instance
-    #     m.file_field = form.cleaned_data["file_upload"]
-    #     m.save()
-    return render(request, "db-view.html", {"instance":instance, "url": url})
+    return render(request, "db-view.html", {"form": form})
 
 def image_file_view(request):
     instance = None

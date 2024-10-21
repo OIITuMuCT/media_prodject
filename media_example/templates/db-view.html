@@ -3,13 +3,10 @@
 {% block title %}DB View{% endblock %}
 
 {% block content %}
-<img src="{{instance.file_field.url}}" alt="No image">
+<h1>ImageFileModelForm</h1>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-
-    <input type="file" name="file_upload">
-    <button type="submit">Save</button>
-    {% comment %} <input type="file" name="image_upload">
-    <button type="submit">Save Image</button> {% endcomment %}
+    {{form.as_p}}
+    <button type="submit">Submit</button>
 </form>
 {% endblock %}
