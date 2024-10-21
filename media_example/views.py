@@ -4,8 +4,8 @@ from django.http import HttpResponse, FileResponse
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from PIL import Image
-from .forms import ExampleForm, UploadForm, PictureForm
-from .models import ExampleModel
+from .forms import ExampleForm, UploadForm, PictureForm, ImageFileForm
+from .models import ExampleModel, ImageFileModel
 
 
 # Create your views here.
@@ -99,17 +99,38 @@ def download_view(request, relative_path):
 def view_example_model(request):
     if request.method == "POST":
         m = ExampleModel() # Create a new ExampleModel instance
-        m.file_field = request.FILES["file_upload"]
-        m.save()
+        if m == "image":
+            m.image_filed = request.FILES["file_upload"]
+            m.save()
+        else:
+            m.file_field = request.FILES["file_upload"]
+            m.save()
     return render(request, "example-model.html")
 
-def view_db(request, model_pk):
-    form = ExampleForm(request.POST, request.FILES)
-    if form.is_valid():
-        # Get an existing model instance
-        m = ExampleModel.objects.get(pk=model_pk)
+def view_db(request):
+    instance = ExampleModel.objects.get(id=4)
+    url = instance.file_field.url
+    # form = ExampleForm(request.POST, request.FILES)
+    # if form.is_valid():
+    #     # Get an existing model instance
+    #     m = ExampleModel.objects.get(pk=model_pk)
         
-        # store the uploaded file on the instance
-        m.file_field = form.cleaned_data["file_upload"]
-        m.save()
-    return render(request, "db-view.html")
+    #     # store the uploaded file on the instance
+    #     m.file_field = form.cleaned_data["file_upload"]
+    #     m.save()
+    return render(request, "db-view.html", {"instance":instance, "url": url})
+
+def image_file_view(request):
+    instance = None
+    if request.method == "POST":
+        form = ImageFileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            instance = ImageFileModel()
+            instance.image_field = form.cleaned_data["image_upload"]
+            instance.file_field = form.cleaned_data["file_upload"]
+            instance.save()
+    else:
+        form = ImageFileForm()
+    return render(request, "image_file.html", {"form": form , "instance": instance})

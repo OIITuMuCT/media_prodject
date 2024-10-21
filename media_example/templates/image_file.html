@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block title %}ImageFileModel{% endblock %}
+
+{% block content %}
+<h1>ImageFileModel</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Submit</button>
+    </form>
+    {% if instance %}
+        <img src="{{ instance.image_field.url }}" alt="No image">
+    {% endif %}
+    {% endblock %}
