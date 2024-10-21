@@ -151,3 +151,18 @@ def view_db_1(request):
 #     if form.valid():
 #         form.save()
 #     return render(request, "")
+
+def update_view(request, pk):
+    instance = ImageFileModel.objects.get(pk=pk)
+    form = ImageFileForm(request.POST, request.FILES, instance=instance)
+    if form.is_valid():
+        form_file = form.cleaned_data["file_field"]
+        form_image = form.cleaned_data["image_field"]
+    if hasattr(form_file, "path"):
+        print("This is a FieldFile")
+    else:
+        print("This is an upload file")
+    # if hasattr(image_file, "path"):
+    #     print("This image was on the instances so no need to resize")
+    # else:
+    #     perform_resize(image_file)
