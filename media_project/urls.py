@@ -30,7 +30,8 @@ urlpatterns = [
     path("my-view/", media_example.views.my_view),
     path('picture-form/', media_example.views.image_view, name="image_form"),
     path("downloads/<path:relative_path>", media_example.views.download_view, name="downloads"),
-    path("example-model", media_example.views.view_example_model, name="example_model")
+    path("example-model", media_example.views.view_example_model, name="example_model"),
+    path("db-view/", media_example.views.view_db, name="db-view"),
 ]
 
 if settings.DEBUG:

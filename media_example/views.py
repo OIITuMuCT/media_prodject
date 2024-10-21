@@ -99,6 +99,17 @@ def download_view(request, relative_path):
 def view_example_model(request):
     if request.method == "POST":
         m = ExampleModel() # Create a new ExampleModel instance
-        m.file_field = request.FILES["uploaded_file"]
+        m.file_field = request.FILES["file_upload"]
+        m.save()
+    return render(request, "example-model.html")
+
+def view_db(request, model_pk):
+    form = ExampleForm(request.POST, request.FILES)
+    if form.is_valid():
+        # Get an existing model instance
+        m = ExampleModel.objects.get(pk=model_pk)
+        
+        # store the uploaded file on the instance
+        m.file_field = form.cleaned_data["file_upload"]
         m.save()
     return render(request, "example-model.html")
