@@ -1,10 +1,12 @@
 from django.test import TestCase
 import os
-from urllib.request import urlopen
-
 from django.conf import settings
 from django.test import LiveServerTestCase, Client
-
+from django import forms
+from media_example.forms import UploadForm
+from media_example.models import ExampleModel
+from media_example.views import media_example
+from urllib.request import urlopen
 
 class Exercise1Test(LiveServerTestCase):
     def test_media_serving(self):
@@ -40,15 +42,6 @@ class Exercise2Test(LiveServerTestCase):
         resp = c.get("/media-example/")
         self.assertIn(b'<a href="/media/test.txt">Test Text File</a>', resp.content)
 from unittest import mock
-
-import os
-from django import forms
-from django.conf import settings
-from django.test import LiveServerTestCase, Client
-from media_example.forms import UploadForm
-from media_example.models import ExampleModel
-from media_example.views import media_example
-from urllib.request import urlopen
 
 
 class Exercise7Test(LiveServerTestCase):
