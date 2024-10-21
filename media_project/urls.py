@@ -24,13 +24,20 @@ import media_example.views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", media_example.views.index, name="index"),
-    path('media-example/', media_example.views.media_example, name="media_example"),
-    path("view/", media_example.views.view, name='view'),
-    path('success/', media_example.views.success, name='success-url'),
+    path("media-example/", media_example.views.media_example, name="media_example"),
+    path("view/", media_example.views.view, name="view"),
+    path("success/", media_example.views.success, name="success-url"),
     path("my-view/", media_example.views.my_view),
-    path('picture-form/', media_example.views.image_view, name="image_form"),
-    path("downloads/<path:relative_path>", media_example.views.download_view, name="downloads"),
-    path("example-model/", media_example.views.view_example_model, name="example_model"),
+    path("picture-form/", media_example.views.image_view, name="image_form"),
+    path(
+        "downloads/<path:relative_path>",
+        media_example.views.download_view,
+        name="downloads",
+    ),
+    path(
+        "example-model/", media_example.views.view_example_model, name="example_model"
+    ),
+    path("db-view-1/", media_example.views.view_db_1, name="db-view-1"),
     path("db-view/", media_example.views.view_db, name="db-view"),
     path("image-file/", media_example.views.image_file_view, name="image-file"),
 ]

@@ -132,3 +132,14 @@ def image_file_view(request):
     else:
         form = ImageFileForm()
     return render(request, "image_file.html", {"form": form , "instance": instance})
+
+def view_db_1(request):
+    instance = None
+    if request.method == "POST":
+        form = ImageFileModelForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            instance = form.save()
+    else:
+        form = ImageFileModelForm()
+    return render(request, "db-view-1.html", {"form": form, "instance": instance})
